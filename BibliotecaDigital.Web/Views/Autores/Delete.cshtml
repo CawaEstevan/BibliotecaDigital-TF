@@ -1,0 +1,55 @@
+@model BibliotecaDigital.Application.ViewModels.AutorViewModel
+
+@{
+    ViewData["Title"] = "Excluir Autor";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirmar Exclusão</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Atenção!</strong> Você está prestes a excluir este autor. Esta ação não pode ser desfeita.
+                    </div>
+
+                    <h5 class="mb-3">Dados do Autor:</h5>
+                    
+                    <dl class="row">
+                        <dt class="col-sm-3">Nome:</dt>
+                        <dd class="col-sm-9">@Model.Nome</dd>
+
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+
+                        <dt class="col-sm-3">Data de Nascimento:</dt>
+                        <dd class="col-sm-9">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Nacionalidade:</dt>
+                        <dd class="col-sm-9">@Model.Nacionalidade</dd>
+
+                        <dt class="col-sm-3">Biografia:</dt>
+                        <dd class="col-sm-9">@Model.Biografia</dd>
+                    </dl>
+
+                    <form asp-action="Delete" method="post" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Confirmar Exclusão
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

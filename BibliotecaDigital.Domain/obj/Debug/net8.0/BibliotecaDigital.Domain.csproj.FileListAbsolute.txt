@@ -1,0 +1,12 @@
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/bin/Debug/net8.0/BibliotecaDigital.Domain.deps.json
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/bin/Debug/net8.0/BibliotecaDigital.Domain.dll
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/bin/Debug/net8.0/BibliotecaDigital.Domain.pdb
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.AssemblyInfoInputs.cache
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.AssemblyInfo.cs
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.csproj.CoreCompileInputs.cache
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.sourcelink.json
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.dll
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/refint/BibliotecaDigital.Domain.dll
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/BibliotecaDigital.Domain.pdb
+/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Domain/obj/Debug/net8.0/ref/BibliotecaDigital.Domain.dll

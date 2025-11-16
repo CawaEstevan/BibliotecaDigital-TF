@@ -1,0 +1,88 @@
+@model IEnumerable<BibliotecaDigital.Application.ViewModels.LivroViewModel>
+
+@{
+    ViewData["Title"] = "Gestão de Livros";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-book-fill"></i> Livros</h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Novo Livro
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar por título, ISBN ou editora..." />
+                </div>
+                <div class="col-md-2">
+                    <button id="searchButton" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="livrosTable">
+        @await Html.PartialAsync("_LivrosListPartial", Model)
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function performSearch() {
+                var searchTerm = $('#searchInput').val();
+                
+                $.ajax({
+                    url: '@Url.Action("Search", "Livros")',
+                    type: 'GET',
+                    data: { searchTerm: searchTerm },
+                    success: function (result) {
+                        $('#livrosTable').html(result);
+                    },
+                    error: function () {
+                        alert('Erro ao realizar a busca');
+                    }
+                });
+            }
+
+            $('#searchButton').click(function () {
+                performSearch();
+            });
+
+            $('#searchInput').keyup(function (e) {
+                if (e.keyCode === 13) {
+                    performSearch();
+                }
+            });
+
+            $('#searchInput').on('input', function () {
+                var searchTerm = $(this).val();
+                if (searchTerm.length >= 3 || searchTerm.length === 0) {
+                    performSearch();
+                }
+            });
+        });
+    </script>
+}

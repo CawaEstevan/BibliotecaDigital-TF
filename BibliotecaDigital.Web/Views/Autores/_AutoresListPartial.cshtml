@@ -1,0 +1,50 @@
+@model IEnumerable<BibliotecaDigital.Application.ViewModels.AutorViewModel>
+
+<div class="table-responsive">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Data de Nascimento</th>
+                    <th>Nacionalidade</th>
+                    <th>Biografia</th>
+                    <th class="text-center" style="width: 200px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var autor in Model)
+                {
+                    <tr>
+                        <td>@autor.Nome</td>
+                        <td>@autor.Email</td>
+                        <td>@autor.DataNascimento.ToString("dd/MM/yyyy")</td>
+                        <td>@autor.Nacionalidade</td>
+                        <td>@(autor.Biografia?.Length > 50 ? autor.Biografia.Substring(0, 50) + "..." : autor.Biografia)</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="/Autores/Details/@autor.Id" class="btn btn-sm btn-info" title="Detalhes">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="/Autores/Edit/@autor.Id" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="/Autores/Delete/@autor.Id" class="btn btn-sm btn-danger" title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> Nenhum autor encontrado.
+        </div>
+    }
+</div>

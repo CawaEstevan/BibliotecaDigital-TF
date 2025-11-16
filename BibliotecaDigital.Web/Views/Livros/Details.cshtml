@@ -1,0 +1,85 @@
+@model BibliotecaDigital.Application.ViewModels.LivroViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Livro";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-info-circle"></i> Detalhes do Livro</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID:</dt>
+                        <dd class="col-sm-9">@Model.Id</dd>
+
+                        <dt class="col-sm-3">Título:</dt>
+                        <dd class="col-sm-9">@Model.Titulo</dd>
+
+                        <dt class="col-sm-3">ISBN:</dt>
+                        <dd class="col-sm-9">@Model.ISBN</dd>
+
+                        <dt class="col-sm-3">Editora:</dt>
+                        <dd class="col-sm-9">@Model.Editora</dd>
+
+                        <dt class="col-sm-3">Ano de Publicação:</dt>
+                        <dd class="col-sm-9">@Model.AnoPublicacao</dd>
+
+                        <dt class="col-sm-3">Preço:</dt>
+                        <dd class="col-sm-9"><strong>@Model.Preco.ToString("C")</strong></dd>
+
+                        <dt class="col-sm-3">Número de Páginas:</dt>
+                        <dd class="col-sm-9">@Model.NumeroPaginas</dd>
+                    </dl>
+
+                    <hr />
+
+                    <h5 class="mb-3"><i class="bi bi-person"></i> Informações do Autor</h5>
+                    
+                    @if (Model.Autor != null)
+                    {
+                        <dl class="row">
+                            <dt class="col-sm-3">Nome:</dt>
+                            <dd class="col-sm-9">@Model.Autor.Nome</dd>
+
+                            <dt class="col-sm-3">Email:</dt>
+                            <dd class="col-sm-9">@Model.Autor.Email</dd>
+
+                            <dt class="col-sm-3">Data de Nascimento:</dt>
+                            <dd class="col-sm-9">@Model.Autor.DataNascimento.ToString("dd/MM/yyyy")</dd>
+
+                            <dt class="col-sm-3">Nacionalidade:</dt>
+                            <dd class="col-sm-9">@Model.Autor.Nacionalidade</dd>
+
+                            <dt class="col-sm-3">Biografia:</dt>
+                            <dd class="col-sm-9">@Model.Autor.Biografia</dd>
+                        </dl>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle"></i> Informações do autor não disponíveis.
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/Livros/Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Voltar
+                        </a>
+                        <div>
+                            <a href="/Livros/Edit/@Model.Id" class="btn btn-warning me-2">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a href="/Livros/Delete/@Model.Id" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Excluir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

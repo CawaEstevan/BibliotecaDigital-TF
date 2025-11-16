@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "0g2NkU6JOss=",
+  "success": true,
+  "projectFilePath": "/workspaces/BibliotecaDigital-TF/BibliotecaDigital.Application/BibliotecaDigital.Application.csproj",
+  "expectedPackageFiles": [
+    "/home/codespace/.nuget/packages/mapster/7.4.0/mapster.7.4.0.nupkg.sha512",
+    "/home/codespace/.nuget/packages/mapster.core/1.2.1/mapster.core.1.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}

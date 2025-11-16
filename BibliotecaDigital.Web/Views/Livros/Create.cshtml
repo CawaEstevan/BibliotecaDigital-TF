@@ -1,0 +1,81 @@
+@model BibliotecaDigital.Application.ViewModels.LivroViewModel
+
+@{
+    ViewData["Title"] = "Novo Livro";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Cadastrar Novo Livro</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Titulo" class="form-label"></label>
+                            <input asp-for="Titulo" class="form-control" placeholder="Digite o título do livro" />
+                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ISBN" class="form-label"></label>
+                            <input asp-for="ISBN" class="form-control" placeholder="Ex: 978-3161484100" />
+                            <span asp-validation-for="ISBN" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AutorId" class="form-label">Autor</label>
+                            <select asp-for="AutorId" class="form-select" asp-items="@ViewBag.Autores">
+                                <option value="">-- Selecione um autor --</option>
+                            </select>
+                            <span asp-validation-for="AutorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Editora" class="form-label"></label>
+                            <input asp-for="Editora" class="form-control" placeholder="Digite o nome da editora" />
+                            <span asp-validation-for="Editora" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="AnoPublicacao" class="form-label"></label>
+                                <input asp-for="AnoPublicacao" type="number" class="form-control" min="1500" max="2025" />
+                                <span asp-validation-for="AnoPublicacao" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Preco" class="form-label"></label>
+                                <input asp-for="Preco" type="number" step="0.01" class="form-control" placeholder="0,00" />
+                                <span asp-validation-for="Preco" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="NumeroPaginas" class="form-label"></label>
+                                <input asp-for="NumeroPaginas" type="number" class="form-control" min="1" placeholder="Ex: 350" />
+                                <span asp-validation-for="NumeroPaginas" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Voltar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Salvar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

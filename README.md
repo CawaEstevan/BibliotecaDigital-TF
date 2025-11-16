@@ -1,25 +1,11 @@
+# Iniciar SQL Server
+docker start sqlserver
 
+# Aguardar inicializar
+sleep 20
 
-## Como Executar
+# Verificar se está rodando
+docker ps
 
-### Clonar o Repositório
-
-git clone https://github.com/SEU_USUARIO/BibliotecaDigital-TF.git
-cd BibliotecaDigital-TF
-
-
-### Restaurar Pacotes
-
-dotnet restore
-
-
-### Aplicar Migrations
-
-dotnet ef database update --project BibliotecaDigital.Infrastructure --startup-project BibliotecaDigital.Web
-
-
-### Executar o Projeto
-
+# Executar o projeto
 dotnet run --project BibliotecaDigital.Web
-
-

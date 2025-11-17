@@ -13,14 +13,14 @@ namespace BibliotecaDigital.Web.Controllers
             _autorService = autorService;
         }
 
-        // GET: Autores
+       
         public async Task<IActionResult> Index()
         {
             var autores = await _autorService.GetAllAsync();
             return View(autores);
         }
 
-        // GET: Autores/Details/5
+        
         public async Task<IActionResult> Details(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -30,13 +30,13 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-        // GET: Autores/Create
+       
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Autores/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AutorViewModel viewModel)
@@ -49,7 +49,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(viewModel);
         }
 
-        // GET: Autores/Edit/5
+      
         public async Task<IActionResult> Edit(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -59,7 +59,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-        // POST: Autores/Edit/5
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AutorViewModel viewModel)
@@ -75,7 +75,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(viewModel);
         }
 
-        // GET: Autores/Delete/5
+       
         public async Task<IActionResult> Delete(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -85,7 +85,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-        // POST: Autores/Delete/5
+   
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -94,7 +94,7 @@ namespace BibliotecaDigital.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // AJAX: Busca dinâmica
+        
         [HttpGet]
         public async Task<IActionResult> Search(string searchTerm)
         {

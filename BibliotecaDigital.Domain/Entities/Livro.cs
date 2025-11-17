@@ -9,10 +9,10 @@ namespace BibliotecaDigital.Domain.Entities
         public decimal Preco { get; set; }
         public int NumeroPaginas { get; set; }
         
-        // Chave estrangeira explícita (OBRIGATÓRIO pelo PDF)
+       
         public int AutorId { get; set; }
         
-        // Propriedade de navegação
+      
         public Autor Autor { get; set; } = null!;
     }
 }

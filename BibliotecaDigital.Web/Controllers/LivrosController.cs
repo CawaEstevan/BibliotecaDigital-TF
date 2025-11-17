@@ -16,14 +16,14 @@ namespace BibliotecaDigital.Web.Controllers
             _autorService = autorService;
         }
 
-        // GET: Livros
+        
         public async Task<IActionResult> Index()
         {
             var livros = await _livroService.GetAllAsync();
             return View(livros);
         }
 
-        // GET: Livros/Details/5
+       
         public async Task<IActionResult> Details(int id)
         {
             var livro = await _livroService.GetByIdAsync(id);
@@ -33,14 +33,14 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-        // GET: Livros/Create
+       
         public async Task<IActionResult> Create()
         {
             await PopulateAutoresDropdown();
             return View();
         }
 
-        // POST: Livros/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LivroViewModel livroViewModel)
@@ -63,7 +63,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livroViewModel);
         }
 
-        // GET: Livros/Edit/5
+       
         public async Task<IActionResult> Edit(int id)
         {
             var livro = await _livroService.GetByIdAsync(id);
@@ -74,7 +74,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-        // POST: Livros/Edit/5
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, LivroViewModel livroViewModel)
@@ -100,7 +100,6 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livroViewModel);
         }
 
-        // GET: Livros/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var livro = await _livroService.GetByIdAsync(id);
@@ -110,7 +109,7 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-        // POST: Livros/Delete/5
+  
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -128,7 +127,7 @@ namespace BibliotecaDigital.Web.Controllers
             }
         }
 
-        // GET: Livros/Search
+      
         public async Task<IActionResult> Search(string searchTerm)
         {
             IEnumerable<LivroViewModel> livros;

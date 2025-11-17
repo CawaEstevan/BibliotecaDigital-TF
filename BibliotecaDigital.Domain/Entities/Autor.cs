@@ -8,7 +8,7 @@ namespace BibliotecaDigital.Domain.Entities
         public string Biografia { get; set; } = string.Empty;
         public DateTime DataNascimento { get; set; }
         
-        // Relacionamento 1:N
+       
         public ICollection<Livro> Livros { get; set; } = new List<Livro>();
     }
 }

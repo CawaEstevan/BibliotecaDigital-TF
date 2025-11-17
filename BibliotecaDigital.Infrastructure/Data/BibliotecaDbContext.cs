@@ -16,7 +16,7 @@ namespace BibliotecaDigital.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuração da entidade Autor
+            
             modelBuilder.Entity<Autor>(entity =>
             {
                 entity.ToTable("Autores");
@@ -36,14 +36,14 @@ namespace BibliotecaDigital.Infrastructure.Data
                 entity.Property(a => a.DataNascimento)
                     .IsRequired();
 
-                // Relacionamento 1:N
+               
                 entity.HasMany(a => a.Livros)
                     .WithOne(l => l.Autor)
                     .HasForeignKey(l => l.AutorId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configuração da entidade Livro
+           
             modelBuilder.Entity<Livro>(entity =>
             {
                 entity.ToTable("Livros");

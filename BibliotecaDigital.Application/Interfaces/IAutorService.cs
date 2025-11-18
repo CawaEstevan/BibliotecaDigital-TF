@@ -10,5 +10,7 @@ namespace BibliotecaDigital.Application.Interfaces
         Task UpdateAsync(AutorViewModel viewModel);
         Task DeleteAsync(int id);
         Task<IEnumerable<AutorViewModel>> SearchAsync(string searchTerm);
+        Task<AutorViewModel?> GetByEmailAsync(string email);
+        Task<AutorViewModel?> GetByNomeAsync(string nome);
     }
 }

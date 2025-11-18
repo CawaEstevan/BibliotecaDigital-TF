@@ -16,14 +16,12 @@ namespace BibliotecaDigital.Web.Controllers
             _autorService = autorService;
         }
 
-        
         public async Task<IActionResult> Index()
         {
             var livros = await _livroService.GetAllAsync();
             return View(livros);
         }
 
-       
         public async Task<IActionResult> Details(int id)
         {
             var livro = await _livroService.GetByIdAsync(id);
@@ -33,14 +31,12 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-       
         public async Task<IActionResult> Create()
         {
             await PopulateAutoresDropdown();
             return View();
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LivroViewModel livroViewModel)
@@ -49,13 +45,36 @@ namespace BibliotecaDigital.Web.Controllers
             {
                 try
                 {
+
+                    var livroExistenteISBN = await _livroService.GetByISBNAsync(livroViewModel.ISBN);
+                    if (livroExistenteISBN != null)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe um livro cadastrado com o ISBN '{livroViewModel.ISBN}'.";
+                        ModelState.AddModelError("ISBN", "Este ISBN já está cadastrado no sistema.");
+                        await PopulateAutoresDropdown(livroViewModel.AutorId);
+                        return View(livroViewModel);
+                    }
+
+
+                    var livroExistenteTitulo = await _livroService.GetByTituloEAutorAsync(
+                        livroViewModel.Titulo, 
+                        livroViewModel.AutorId);
+                    
+                    if (livroExistenteTitulo != null)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe um livro com o título '{livroViewModel.Titulo}' para este autor.";
+                        ModelState.AddModelError("Titulo", "Este autor já possui um livro com este título.");
+                        await PopulateAutoresDropdown(livroViewModel.AutorId);
+                        return View(livroViewModel);
+                    }
+
                     await _livroService.AddAsync(livroViewModel);
-                    TempData["SuccessMessage"] = "Livro cadastrado com sucesso!";
+                    TempData["SuccessMessage"] = "✅ Livro cadastrado com sucesso!";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    TempData["ErrorMessage"] = $"Erro ao cadastrar livro: {ex.Message}";
+                    TempData["ErrorMessage"] = $"❌ Erro ao cadastrar livro: {ex.Message}";
                 }
             }
 
@@ -63,7 +82,6 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livroViewModel);
         }
 
-       
         public async Task<IActionResult> Edit(int id)
         {
             var livro = await _livroService.GetByIdAsync(id);
@@ -74,7 +92,6 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, LivroViewModel livroViewModel)
@@ -86,13 +103,23 @@ namespace BibliotecaDigital.Web.Controllers
             {
                 try
                 {
+                    // ⭐ VERIFICAR DUPLICIDADE NA EDIÇÃO - ISBN
+                    var livroExistenteISBN = await _livroService.GetByISBNAsync(livroViewModel.ISBN);
+                    if (livroExistenteISBN != null && livroExistenteISBN.Id != id)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe outro livro cadastrado com o ISBN '{livroViewModel.ISBN}'.";
+                        ModelState.AddModelError("ISBN", "Este ISBN já está cadastrado em outro livro.");
+                        await PopulateAutoresDropdown(livroViewModel.AutorId);
+                        return View(livroViewModel);
+                    }
+
                     await _livroService.UpdateAsync(livroViewModel);
-                    TempData["SuccessMessage"] = "Livro atualizado com sucesso!";
+                    TempData["SuccessMessage"] = "✅ Livro atualizado com sucesso!";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    TempData["ErrorMessage"] = $"Erro ao atualizar livro: {ex.Message}";
+                    TempData["ErrorMessage"] = $"❌ Erro ao atualizar livro: {ex.Message}";
                 }
             }
 
@@ -109,7 +136,6 @@ namespace BibliotecaDigital.Web.Controllers
             return View(livro);
         }
 
-  
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -117,17 +143,16 @@ namespace BibliotecaDigital.Web.Controllers
             try
             {
                 await _livroService.DeleteAsync(id);
-                TempData["SuccessMessage"] = "Livro excluído com sucesso!";
+                TempData["SuccessMessage"] = "✅ Livro excluído com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Erro ao excluir livro: {ex.Message}";
+                TempData["ErrorMessage"] = $"❌ Erro ao excluir livro: {ex.Message}";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-      
         public async Task<IActionResult> Search(string searchTerm)
         {
             IEnumerable<LivroViewModel> livros;

@@ -42,7 +42,6 @@ namespace BibliotecaDigital.Application.Services
             if (livro == null)
                 return null;
             
-            // Mapear manualmente para evitar referência circular
             return new LivroViewModel
             {
                 Id = livro.Id,
@@ -62,7 +61,6 @@ namespace BibliotecaDigital.Application.Services
                     Nacionalidade = livro.Autor.Nacionalidade,
                     Biografia = livro.Autor.Biografia,
                     DataNascimento = livro.Autor.DataNascimento
-                    // NÃO incluir Livros aqui para evitar loop infinito
                 } : null
             };
         }
@@ -134,6 +132,59 @@ namespace BibliotecaDigital.Application.Services
             }).ToList();
             
             return livrosViewModel;
+        }
+
+
+        public async Task<LivroViewModel?> GetByISBNAsync(string isbn)
+        {
+            var livros = await _livroRepository.GetAllAsync();
+            
+
+            var isbnLimpo = isbn.Replace("-", "").Replace(" ", "");
+            
+            var livro = livros.FirstOrDefault(l => 
+                l.ISBN.Replace("-", "").Replace(" ", "")
+                    .Equals(isbnLimpo, StringComparison.OrdinalIgnoreCase));
+            
+            if (livro == null)
+                return null;
+            
+            return new LivroViewModel
+            {
+                Id = livro.Id,
+                Titulo = livro.Titulo,
+                ISBN = livro.ISBN,
+                Editora = livro.Editora,
+                AnoPublicacao = livro.AnoPublicacao,
+                Preco = livro.Preco,
+                NumeroPaginas = livro.NumeroPaginas,
+                AutorId = livro.AutorId,
+                NomeAutor = livro.Autor?.Nome
+            };
+        }
+
+        public async Task<LivroViewModel?> GetByTituloEAutorAsync(string titulo, int autorId)
+        {
+            var livros = await _livroRepository.GetByAutorIdAsync(autorId);
+            
+            var livro = livros.FirstOrDefault(l => 
+                l.Titulo.Trim().Equals(titulo.Trim(), StringComparison.OrdinalIgnoreCase));
+            
+            if (livro == null)
+                return null;
+            
+            return new LivroViewModel
+            {
+                Id = livro.Id,
+                Titulo = livro.Titulo,
+                ISBN = livro.ISBN,
+                Editora = livro.Editora,
+                AnoPublicacao = livro.AnoPublicacao,
+                Preco = livro.Preco,
+                NumeroPaginas = livro.NumeroPaginas,
+                AutorId = livro.AutorId,
+                NomeAutor = livro.Autor?.Nome
+            };
         }
     }
 }

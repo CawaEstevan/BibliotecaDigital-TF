@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BibliotecaDigital.Application.Validations;
 
 namespace BibliotecaDigital.Application.ViewModels
 {
@@ -8,10 +9,12 @@ namespace BibliotecaDigital.Application.ViewModels
         
         [Required(ErrorMessage = "O título é obrigatório")]
         [StringLength(200, MinimumLength = 2, ErrorMessage = "O título deve ter entre 2 e 200 caracteres")]
+        [Display(Name = "Título")]
         public string Titulo { get; set; } = string.Empty;
         
         [Required(ErrorMessage = "O ISBN é obrigatório")]
-        [RegularExpression(@"^\d{3}-\d{10}$", ErrorMessage = "ISBN deve estar no formato XXX-XXXXXXXXXX")]
+        [ISBNValido] 
+        [Display(Name = "ISBN")]
         public string ISBN { get; set; } = string.Empty;
         
         [StringLength(100, ErrorMessage = "A editora não pode exceder 100 caracteres")]
@@ -19,7 +22,7 @@ namespace BibliotecaDigital.Application.ViewModels
         public string Editora { get; set; } = string.Empty;
         
         [Required(ErrorMessage = "O ano de publicação é obrigatório")]
-        [Range(1500, 2025, ErrorMessage = "Ano deve estar entre 1500 e 2025")]
+        [AnoPublicacaoRealista] 
         [Display(Name = "Ano de Publicação")]
         public int AnoPublicacao { get; set; }
         
@@ -37,7 +40,7 @@ namespace BibliotecaDigital.Application.ViewModels
         [Display(Name = "Autor")]
         public int AutorId { get; set; }
         
-        // Propriedades de navegação/exibição
+      
         public string? NomeAutor { get; set; }
         public AutorViewModel? Autor { get; set; }
     }

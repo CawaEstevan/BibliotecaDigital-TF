@@ -12,37 +12,65 @@
                     <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Cadastrar Novo Autor</h4>
                 </div>
                 <div class="card-body">
+                    @*  MENSAGENS DE ERRO DE DUPLICIDADE *@
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <strong>Erro!</strong> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle-fill"></i>
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
                     <form asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-warning"></div>
                         
                         <div class="mb-3">
-                            <label asp-for="Nome" class="form-label"></label>
+                            <label asp-for="Nome" class="form-label fw-bold"></label>
                             <input asp-for="Nome" class="form-control" placeholder="Digite o nome completo do autor" />
-                            <span asp-validation-for="Nome" class="text-danger"></span>
+                            <span asp-validation-for="Nome" class="text-danger small"></span>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle"></i> O nome deve ser único no sistema
+                            </small>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label"></label>
+                            <label asp-for="Email" class="form-label fw-bold"></label>
                             <input asp-for="Email" type="email" class="form-control" placeholder="exemplo@email.com" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle"></i> O email deve ser único no sistema
+                            </small>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DataNascimento" class="form-label"></label>
+                            <label asp-for="DataNascimento" class="form-label fw-bold"></label>
                             <input asp-for="DataNascimento" type="date" class="form-control" />
-                            <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                            <span asp-validation-for="DataNascimento" class="text-danger small"></span>
+                            <small class="form-text text-muted">
+                                <i class="bi bi-info-circle"></i> O autor deve ter entre 18 e 120 anos
+                            </small>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Nacionalidade" class="form-label"></label>
+                            <label asp-for="Nacionalidade" class="form-label fw-bold"></label>
                             <input asp-for="Nacionalidade" class="form-control" placeholder="Ex: Brasileiro, Americano..." />
-                            <span asp-validation-for="Nacionalidade" class="text-danger"></span>
+                            <span asp-validation-for="Nacionalidade" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Biografia" class="form-label"></label>
+                            <label asp-for="Biografia" class="form-label fw-bold"></label>
                             <textarea asp-for="Biografia" class="form-control" rows="5" placeholder="Conte um pouco sobre o autor..."></textarea>
-                            <span asp-validation-for="Biografia" class="text-danger"></span>
+                            <span asp-validation-for="Biografia" class="text-danger small"></span>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">

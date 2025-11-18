@@ -28,7 +28,6 @@ namespace BibliotecaDigital.Application.Services
             if (autor == null)
                 return null;
 
-            // Mapear manualmente para evitar referência circular
             var autorViewModel = new AutorViewModel
             {
                 Id = autor.Id,
@@ -76,6 +75,50 @@ namespace BibliotecaDigital.Application.Services
         {
             var autores = await _autorRepository.SearchAsync(searchTerm);
             return autores.Adapt<IEnumerable<AutorViewModel>>();
+        }
+
+
+        public async Task<AutorViewModel?> GetByEmailAsync(string email)
+        {
+            var autores = await _autorRepository.GetAllAsync();
+            
+            var autor = autores.FirstOrDefault(a => 
+                a.Email.Trim().Equals(email.Trim(), StringComparison.OrdinalIgnoreCase));
+            
+            if (autor == null)
+                return null;
+            
+            return new AutorViewModel
+            {
+                Id = autor.Id,
+                Nome = autor.Nome,
+                Email = autor.Email,
+                Nacionalidade = autor.Nacionalidade,
+                Biografia = autor.Biografia,
+                DataNascimento = autor.DataNascimento
+            };
+        }
+
+
+        public async Task<AutorViewModel?> GetByNomeAsync(string nome)
+        {
+            var autores = await _autorRepository.GetAllAsync();
+            
+            var autor = autores.FirstOrDefault(a => 
+                a.Nome.Trim().Equals(nome.Trim(), StringComparison.OrdinalIgnoreCase));
+            
+            if (autor == null)
+                return null;
+            
+            return new AutorViewModel
+            {
+                Id = autor.Id,
+                Nome = autor.Nome,
+                Email = autor.Email,
+                Nacionalidade = autor.Nacionalidade,
+                Biografia = autor.Biografia,
+                DataNascimento = autor.DataNascimento
+            };
         }
     }
 }

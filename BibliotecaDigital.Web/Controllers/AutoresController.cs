@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using BibliotecaDigital.Application.Interfaces;
 using BibliotecaDigital.Application.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BibliotecaDigital.Web.Controllers
 {
@@ -13,14 +13,12 @@ namespace BibliotecaDigital.Web.Controllers
             _autorService = autorService;
         }
 
-       
         public async Task<IActionResult> Index()
         {
             var autores = await _autorService.GetAllAsync();
             return View(autores);
         }
 
-        
         public async Task<IActionResult> Details(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -30,26 +28,50 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-       
         public IActionResult Create()
         {
             return View();
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AutorViewModel viewModel)
+        public async Task<IActionResult> Create(AutorViewModel autorViewModel)
         {
             if (ModelState.IsValid)
             {
-                await _autorService.AddAsync(viewModel);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+
+                    var autorExistenteEmail = await _autorService.GetByEmailAsync(autorViewModel.Email);
+                    if (autorExistenteEmail != null)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe um autor cadastrado com o email '{autorViewModel.Email}'.";
+                        ModelState.AddModelError("Email", "Este email já está cadastrado no sistema.");
+                        return View(autorViewModel);
+                    }
+
+
+                    var autorExistenteNome = await _autorService.GetByNomeAsync(autorViewModel.Nome);
+                    if (autorExistenteNome != null)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe um autor cadastrado com o nome '{autorViewModel.Nome}'.";
+                        ModelState.AddModelError("Nome", "Este nome já está cadastrado no sistema.");
+                        return View(autorViewModel);
+                    }
+
+                    await _autorService.AddAsync(autorViewModel);
+                    TempData["SuccessMessage"] = "✅ Autor cadastrado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = $"❌ Erro ao cadastrar autor: {ex.Message}";
+                }
             }
-            return View(viewModel);
+
+            return View(autorViewModel);
         }
 
-      
         public async Task<IActionResult> Edit(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -59,23 +81,48 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AutorViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, AutorViewModel autorViewModel)
         {
-            if (id != viewModel.Id)
+            if (id != autorViewModel.Id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
-                await _autorService.UpdateAsync(viewModel);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+
+                    var autorExistenteEmail = await _autorService.GetByEmailAsync(autorViewModel.Email);
+                    if (autorExistenteEmail != null && autorExistenteEmail.Id != id)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe outro autor cadastrado com o email '{autorViewModel.Email}'.";
+                        ModelState.AddModelError("Email", "Este email já está cadastrado em outro autor.");
+                        return View(autorViewModel);
+                    }
+
+   
+                    var autorExistenteNome = await _autorService.GetByNomeAsync(autorViewModel.Nome);
+                    if (autorExistenteNome != null && autorExistenteNome.Id != id)
+                    {
+                        TempData["ErrorMessage"] = $"⚠️ Já existe outro autor cadastrado com o nome '{autorViewModel.Nome}'.";
+                        ModelState.AddModelError("Nome", "Este nome já está cadastrado em outro autor.");
+                        return View(autorViewModel);
+                    }
+
+                    await _autorService.UpdateAsync(autorViewModel);
+                    TempData["SuccessMessage"] = "✅ Autor atualizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = $"❌ Erro ao atualizar autor: {ex.Message}";
+                }
             }
-            return View(viewModel);
+
+            return View(autorViewModel);
         }
 
-       
         public async Task<IActionResult> Delete(int id)
         {
             var autor = await _autorService.GetByIdAsync(id);
@@ -85,26 +132,37 @@ namespace BibliotecaDigital.Web.Controllers
             return View(autor);
         }
 
-   
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _autorService.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _autorService.DeleteAsync(id);
+                TempData["SuccessMessage"] = "✅ Autor excluído com sucesso!";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"❌ Erro ao excluir autor: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> Search(string searchTerm)
         {
+            IEnumerable<AutorViewModel> autores;
+
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                var allAutores = await _autorService.GetAllAsync();
-                return PartialView("_AutoresListPartial", allAutores);
+                autores = await _autorService.GetAllAsync();
+            }
+            else
+            {
+                autores = await _autorService.SearchAsync(searchTerm);
             }
 
-            var autores = await _autorService.SearchAsync(searchTerm);
             return PartialView("_AutoresListPartial", autores);
         }
     }

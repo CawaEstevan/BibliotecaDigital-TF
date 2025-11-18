@@ -11,5 +11,7 @@ namespace BibliotecaDigital.Application.Interfaces
         Task DeleteAsync(int id);
         Task<IEnumerable<LivroViewModel>> SearchAsync(string searchTerm);
         Task<IEnumerable<LivroViewModel>> GetByAutorIdAsync(int autorId);
+        Task<LivroViewModel?> GetByISBNAsync(string isbn);
+        Task<LivroViewModel?> GetByTituloEAutorAsync(string titulo, int autorId);
     }
 }
